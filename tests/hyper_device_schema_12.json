@@ -1,0 +1,101 @@
+{
+    "id": 12,
+    "name": "Axon Board v1.3.0",
+    "vendor_name": "Hyper",
+    "vendor_device_id_format": "Macaddr",
+    "description": "Revisited design with all useful attributes combined.",
+    "creation_time": "0000-01-01T00:00:00-00:00",
+    "attributes": {
+        "6": {
+            "id": 14,
+            "name": "Publish interval s",
+            "description": "How often the device publishes updates.",
+            "format": "Uint16",
+            "access": {
+                "read": true,
+                "write": true
+            },
+            "quantity": "Time",
+            "unit": "second",
+            "vendor_name": "Hyper"
+        },
+        "5": {
+            "id": 13,
+            "name": "Uptime ms",
+            "description": "Uptime of the device in milliseconds.",
+            "format": "Uint64",
+            "access": {
+                "read": true,
+                "write": false
+            },
+            "quantity": "Time",
+            "unit": "millisecond",
+            "vendor_name": "Hyper"
+        },
+        "4": {
+            "id": 12,
+            "name": "Reboot 1",
+            "description": "Reboot request attribute.",
+            "format": "Bool",
+            "access": {
+                "read": false,
+                "write": true
+            },
+            "quantity": "None",
+            "unit": "None",
+            "vendor_name": "Hyper"
+        },
+        "3": {
+            "id": 8,
+            "name": "Firmware version data 1",
+            "description": "The hash of the current firmware version.",
+            "format": ["Data", 16],
+            "access": {
+                "read": true,
+                "write": false
+            },
+            "quantity": "None",
+            "unit": "None",
+            "vendor_name": "Hyper"
+        },
+        "2": {
+            "id": 6,
+            "name": "VEML7700 ambient light",
+            "description": "",
+            "format": "Float32",
+            "access": {
+                "read": true,
+                "write": false
+            },
+            "quantity": "Illuminance",
+            "unit": "lux",
+            "vendor_name": null
+        },
+        "1": {
+            "id": 4,
+            "name": "SHT31 relative humidity",
+            "description": "",
+            "format": "Float32",
+            "access": {
+                "read": true,
+                "write": false
+            },
+            "quantity": "Humidity",
+            "unit": "percent",
+            "vendor_name": null
+        },
+        "0": {
+            "id": 3,
+            "name": "SHT31 ambient temperature",
+            "description": "",
+            "format": "Float32",
+            "access": {
+                "read": true,
+                "write": false
+            },
+            "quantity": "Temperature",
+            "unit": "degree Celsius",
+            "vendor_name": null
+        }
+    }
+}
