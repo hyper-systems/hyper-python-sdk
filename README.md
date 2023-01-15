@@ -7,7 +7,7 @@ Python SDK for interacting with the Hyper.systems platform.
 Install the latest version globally using pip:
 
 ```shell
-pip3 install -U git+https://github.com/hyper-systems/hyper-python-sdk
+pip install -U hyper-systems
 ```
 
 ### Adding as a dependency to your project
@@ -15,15 +15,14 @@ pip3 install -U git+https://github.com/hyper-systems/hyper-python-sdk
 Add to `requirements.txt` for pip:
 
 ```shell
-echo "git+https://github.com/hyper-systems/hyper-python-sdk@1.0.0" >> requirements.txt
+echo "hyper-systems==1.1.3" >> requirements.txt
 ```
 
 Alternatively, install with poetry:
 
 ```shell
-poetry add git+https://github.com/hyper-systems/hyper-python-sdk@1.0.0
+poetry add "hyper-systems==1.1.3"
 ```
-
 
 ## Usage
 
