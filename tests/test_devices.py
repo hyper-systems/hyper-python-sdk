@@ -110,5 +110,15 @@ assert dev1.uptime_ms_5 is None and dev1.veml7700_ambient_light_2 is None
 dev1[5] = 1000
 assert dev1[5] == 1000
 
+# set value by slot out of bounds
+try:
+  dev1[999] = 42
+  assert False
+except TypeError as err:
+  assert (
+    err.args[0]
+    == "cannot set value: no read attribute for slot 999 found in device with schema 12"
+  )
+
 print(dev1)
-print(dev1.attributes)
+print(dev1.message)
