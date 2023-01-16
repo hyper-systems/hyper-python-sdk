@@ -74,11 +74,28 @@ def set_slot_value(self, slot, value):
     if not isinstance(slot, int):
         raise TypeError("the attribute slot must be an int value")
     slot_key = str(slot)
+
+    # Check if slot is within bounds.
     if slot_key not in self._rvalues:
         raise TypeError(
             "cannot set value: no read attribute for slot %s found in device with schema %d"
             % (slot_key, self.device_class_id)
         )
+
+    # Check the attribute type.
+    attr = self.schema.attributes[slot_key]
+    attr_py_type, valid_rvalues = get_valid_type_for_attr(attr)
+    if not isinstance(value, attr_py_type):
+        raise TypeError(
+            "value '%s' for attribute slot %d has an invalid type: expected %s, got %s"
+            % (value, slot, attr_py_type.__name__, type(value).__name__)
+        )
+    if valid_rvalues is not None and value not in valid_rvalues:
+        raise TypeError(
+            "value %s for enum attribute slot %d is invalid: expected one of: %s"
+            % (value, slot, list(valid_rvalues))
+        )
+
     self._rvalues[slot_key] = value
 
 
