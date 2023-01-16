@@ -73,7 +73,13 @@ def get_valid_type_for_attr(attr):
 def set_slot_value(self, slot, value):
     if not isinstance(slot, int):
         raise TypeError("the attribute slot must be an int value")
-    self._rvalues[str(slot)] = value
+    slot_key = str(slot)
+    if slot_key not in self._rvalues:
+        raise TypeError(
+            "cannot set value: no read attribute for slot %s found in device with schema %d"
+            % (slot_key, self.device_class_id)
+        )
+    self._rvalues[slot_key] = value
 
 
 def get_slot_value(self, slot):
