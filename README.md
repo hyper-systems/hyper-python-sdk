@@ -18,6 +18,8 @@ Add to `requirements.txt` for pip:
 echo "hyper-systems==1.1.3" >> requirements.txt
 ```
 
+Consider using [venv](https://docs.python.org/3/tutorial/venv.html), if you want to have an isolated environment for your project with pip.
+
 Alternatively, install with poetry:
 
 ```shell
