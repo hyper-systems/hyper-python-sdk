@@ -26,6 +26,43 @@ Alternatively, install with poetry:
 poetry add "hyper-systems==1.1.3"
 ```
 
+### Installing the latest development version of the package globally
+
+```shell
+$ pip install -U git+https://github.com/hyper-systems/hyper-python-sdk.git@master
+```
+
+## Using this repo for development
+
+This repo uses [poetry](https://python-poetry.org/) (please check the [docs](https://python-poetry.org/docs/)) for development and building. It is currentlu set up to create a `.venv` directory in the root of this project on install.
+
+
+Installing the environment:
+
+```shell
+$ poetry install
+```
+
+### Shell usage
+
+After installing you can use the environment created with poetry, for example to:
+
+- update the environment:
+
+```shell
+$ poetry update
+```
+
+- execute scripts:
+
+```shell
+$ poetry run tests/test_devices.py
+```
+
+### VSCode
+
+You can also use the environment in VSCode by opening one of the python files in this repo and selecting the poetry python interpreter in the bottom left corner (`('.venv': poetry)`). You then reload the VSCode window (or open and close VSCode) and VSCode should be now using the `.venv` environment created by poetry.
+
 ## Usage
 
 The first thing we need to do to start using the Python SDK is provide a valid API key. This will allow the library to make requests to Hyper's services for publishing and receiving messages.
