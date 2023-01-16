@@ -2,6 +2,10 @@
 
 Python SDK for interacting with the Hyper.systems platform.
 
+**Pypi.org:**
+
+[![Supported Versions](https://img.shields.io/pypi/pyversions/hyper-systems.svg)](https://pypi.org/project/hyper-systems)
+
 ## Installing
 
 Install the latest version globally using pip:
