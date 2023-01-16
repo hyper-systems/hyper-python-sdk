@@ -237,8 +237,8 @@ def dispatch(self, message):
             f(value)
 
 
-def validate_vendor_device_id(id_format, id):
-    if id_format == "Macaddr":
+def validate_vendor_device_id(vendor_device_id_format, id):
+    if vendor_device_id_format.kind == "Macaddr":
         if len(id) != 17:
             raise ValueError("the vendor device id must a valid MAC address")
 
