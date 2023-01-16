@@ -57,11 +57,11 @@ from hyper_systems.http import Client
 
 # Load the device schema.
 SCHEMA_FILE = "<path to downloaded schema file>"
-schema = hyper.Schema.load(SCHEMA_FILE)
+schema = Schema.load(SCHEMA_FILE)
 
 # Initialize the device with a schema and a unique id.
-device_id = "00:00:00:00:01"
-device = hyper.Device.from_schema(schema, device_id)
+device_id = "00:00:00:00:00:01"
+device = Device.from_schema(schema, device_id)
 ```
 
 The device schema contains the full description of the properties of the device. Note that multiple devices can match the same device schema as long as they have different device ids.
@@ -105,7 +105,7 @@ You can set any attribute values available on the device. Setting all attributes
 Once your device is initialized and has the attribute values set, you can publish them to the hyper.systems platform.
 
 ```python
-hyper_client = hyper.http.Client(
+hyper_client = Client(
     api_url=HYPER_API_URL,
     api_key=HYPER_API_KEY,
     site_id=HYPER_SITE_ID
