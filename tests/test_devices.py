@@ -42,6 +42,16 @@ except TypeError as err:
         == "value 'invalid' for attribute 'veml7700_ambient_light_2' has an invalid type: expected float, got str"
     )
 
+# set invalid attr type by slot
+try:
+    dev1[2] = "invalid"
+    assert False
+except TypeError as err:
+    assert (
+        err.args[0]
+        == "value 'invalid' for attribute slot 2 has an invalid type: expected float, got str"
+    )
+
 # set write attribute binding
 assert dev1.on_publish_interval_s_6_update is None
 dev1.on_publish_interval_s_6_update = print
