@@ -9,6 +9,16 @@ SCHEMA_FILE = os.path.join(PROJECT_ROOT, "./tests/hyper_device_schema_12.json")
 schema = Schema.load(SCHEMA_FILE)
 dev1 = Device.from_schema(schema, device_id="DE:AD:BE:EF:FF:00")
 
+# create device with invalid macaddr
+try:
+  dev2_invalid = Device.from_schema(schema, device_id="DE:AD:BE")
+  assert False
+except ValueError as err:
+  assert (
+    err.args[0]
+    == "the vendor device id must a valid MAC address"
+  )
+
 # check printing
 assert str(dev1) == "'<Device12: DE:AD:BE:EF:FF:00>'"
 
