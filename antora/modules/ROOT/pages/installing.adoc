@@ -1,0 +1,54 @@
+= Installing the Hyper Python SDK package
+
+== Installing globally
+
+=== Using pip
+
+[source,shell]
+----
+pip install -U hyper-systems
+----
+
+Installing the latest development version of the package globally:
+[source,shell]
+----
+$ pip install -U git+https://github.com/hyper-systems/hyper-python-sdk.git@master
+----
+
+== Adding as a dependency to your project
+
+=== Using pip
+
+Add the latest stable release to requirements.txt:
+[source,shell]
+----
+echo "hyper-systems" >> requirements.txt
+----
+
+You can also specify the version, for example:
+[source,shell]
+----
+echo "hyper-systems==1.1.4" >> requirements.txt
+----
+
+Consider using venv, if you want to have an isolated environment for your project with pip.
+
+=== Using poetry
+
+Add the latest stable release to `pyproject.toml` with poetry:
+[source,shell]
+----
+poetry add "hyper-systems"
+----
+
+You can also specify the version, for example:
+[source,shell]
+----
+poetry add "hyper-systems==1.1.4"
+----
+
+Add the latest development version to `pyproject.toml` with poetry:
+[source,shell]
+----
+$ poetry add git+https://github.com/hyper-systems/hyper-python-sdk.git@master
+----

@@ -1,0 +1,21 @@
+= Hyper Python SDK
+
+Python SDK for interacting with the Hyper.systems platform.
+
+== Setup
+
+xref:installing.adoc[*Installing the Hyper Python SDK package*]
+
+== Usage
+
+[cols="1,2"]
+|===
+|xref:devices.adoc[*Devices*]
+|Publishing and receiving messages to and from Devices.
+
+|*Analytics*
+|Obtain computed metrics for your data.
+
+|*Automations*
+|Create and manage automations.
+|=== 
