@@ -21,7 +21,7 @@ pip install -U hyper-systems
 Add to `requirements.txt` for pip:
 
 ```shell
-echo "hyper-systems==1.1.4" >> requirements.txt
+echo "hyper-systems==1.2.0" >> requirements.txt
 ```
 
 Consider using [venv](https://docs.python.org/3/tutorial/venv.html), if you want to have an isolated environment for your project with pip.
@@ -29,7 +29,7 @@ Consider using [venv](https://docs.python.org/3/tutorial/venv.html), if you want
 Alternatively, install with poetry:
 
 ```shell
-poetry add "hyper-systems==1.1.4"
+poetry add "hyper-systems==1.2.0"
 ```
 
 ### Installing the latest development version of the package globally
