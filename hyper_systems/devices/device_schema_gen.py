@@ -289,10 +289,27 @@ class Decimal:
 
 
 @dataclass
+class Serial:
+    """Original type: vendor_id_format = [ ... | Serial | ... ]"""
+
+    @property
+    def kind(self) -> str:
+        """Name of the class representing this variant."""
+        return 'Serial'
+
+    @staticmethod
+    def to_json() -> Any:
+        return 'Serial'
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
 class VendorIdFormat:
     """Original type: vendor_id_format = [ ... ]"""
 
-    value: Union[Macaddr, Imei, Decimal]
+    value: Union[Macaddr, Imei, Decimal, Serial]
 
     @property
     def kind(self) -> str:
@@ -308,6 +325,8 @@ class VendorIdFormat:
                 return cls(Imei())
             if x == 'Decimal':
                 return cls(Decimal())
+            if x == 'Serial':
+                return cls(Serial())
             _atd_bad_json('VendorIdFormat', x)
         _atd_bad_json('VendorIdFormat', x)
 
@@ -812,6 +831,27 @@ class DeviceMessage:
 
     @classmethod
     def from_json_string(cls, x: str) -> 'DeviceMessage':
+        return cls.from_json(json.loads(x))
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
+class DeviceMessageList:
+    """Original type: device_message_list"""
+
+    value: List[DeviceMessage]
+
+    @classmethod
+    def from_json(cls, x: Any) -> 'DeviceMessageList':
+        return cls(_atd_read_list(DeviceMessage.from_json)(x))
+
+    def to_json(self) -> Any:
+        return _atd_write_list((lambda x: x.to_json()))(self.value)
+
+    @classmethod
+    def from_json_string(cls, x: str) -> 'DeviceMessageList':
         return cls.from_json(json.loads(x))
 
     def to_json_string(self, **kw: Any) -> str:
