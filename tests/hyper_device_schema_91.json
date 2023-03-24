@@ -1,0 +1,26 @@
+{
+  "id": 91,
+  "name": "Keyed Device",
+  "vendor_name": "Hyper",
+  "vendor_device_id_format": "Serial",
+  "description": "Keyed device test",
+  "creation_time": "0000-01-01T00:00:00-00:00",
+  "attributes": {
+    "0": {
+      "id": 910,
+      "name": "Temperature by material",
+      "description": "",
+      "format": [
+        "Keyed",
+        "Float32"
+      ],
+      "access": {
+        "read": true,
+        "write": false
+      },
+      "quantity": "Temperature",
+      "unit": "degree Celsius",
+      "vendor_name": "Hyper"
+    }
+  }
+}

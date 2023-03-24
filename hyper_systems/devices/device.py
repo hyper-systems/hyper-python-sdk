@@ -7,6 +7,7 @@ import uuid
 from datetime import datetime
 from . import device_schema_gen
 
+
 class Schema(device_schema_gen.DeviceSchema):
     @classmethod
     def load(cls, file_path):
@@ -65,25 +66,31 @@ def get_valid_type_for_attr(attr):
     elif attr.format.kind == "Enum":
         attr_py_type = int
         valid_values = list(map(int, attr.format.value.value.keys()))
+    elif attr.format.kind == "Keyed":
+        attr_py_type = [str, int]
     else:
         raise Exception("Invalid attribute format " + str(attr.format))
     return (attr_py_type, valid_values)
 
 
-def set_slot_value(self, slot, value):
+def get_attr_from_slot(self, slot):
     if not isinstance(slot, int):
         raise TypeError("the attribute slot must be an int value")
     slot_key = str(slot)
-
     # Check if slot is within bounds.
     if slot_key not in self._rvalues:
         raise TypeError(
             "cannot set value: no read attribute for slot %s found in device with schema %d"
             % (slot_key, self.device_class_id)
         )
-
     # Check the attribute type.
     attr = self.schema.attributes[slot_key]
+
+    return attr
+
+
+def set_slot_value(self, slot, value):
+    attr = get_attr_from_slot(self, slot)
     attr_py_type, valid_rvalues = get_valid_type_for_attr(attr)
     if not isinstance(value, attr_py_type):
         raise TypeError(
@@ -96,10 +103,29 @@ def set_slot_value(self, slot, value):
             % (value, slot, list(valid_rvalues))
         )
 
-    self._rvalues[slot_key] = value
+    self._rvalues[str(slot)] = value
 
 
 def get_slot_value(self, slot):
+    attr = get_attr_from_slot(self, slot)
+    attr_py_type, _valid_rvalues = get_valid_type_for_attr(attr)
+
+    # check if keyed
+    if isinstance(attr_py_type, list):
+        if attr_py_type[0] == str:
+            if not self._rvalues[str(slot)]:
+                # create special keyed dict that raises TypeError if key is not a str
+                class KeyedDict(dict):
+                    def __setitem__(self, key, value):
+                        if not isinstance(key, str):
+                            slug = make_attr_slug(slot, attr)
+                            raise TypeError(
+                                f"keyed attribute slot `{slot}` (`{slug}`) must be a dict[string, float]"
+                            )
+                        super().__setitem__(key, value)
+
+                self._rvalues[str(slot)] = KeyedDict()
+
     if not isinstance(slot, int):
         raise TypeError("the attribute slot must be an int value")
     return self._rvalues[str(slot)]
@@ -110,20 +136,27 @@ def make_read_attr_property(slot, attr):
     attr_py_type, valid_rvalues = get_valid_type_for_attr(attr)
 
     def attr_get(self):
-        return self._rvalues[slot]
+        return get_slot_value(self, int(slot))
 
-    def attr_set(self, x):
-        if not isinstance(x, attr_py_type):
+    def attr_set(self, value):
+        if isinstance(attr_py_type, list):
+            if attr_py_type[0] == str:
+                if not isinstance(value, dict):
+                    raise TypeError(
+                        "value '%s' for attribute '%s' has an invalid type: expected %s, got %s"
+                        % (value, slug, dict.__name__, type(value).__name__)
+                    )
+        elif not isinstance(value, attr_py_type):
             raise TypeError(
                 "value '%s' for attribute '%s' has an invalid type: expected %s, got %s"
-                % (x, slug, attr_py_type.__name__, type(x).__name__)
+                % (value, slug, attr_py_type.__name__, type(value).__name__)
             )
-        if valid_rvalues is not None and x not in valid_rvalues:
+        if valid_rvalues is not None and value not in valid_rvalues:
             raise TypeError(
                 "value %s for enum attribute '%s' is invalid: expected one of: %s"
-                % (x, slug, list(valid_rvalues))
+                % (value, slug, list(valid_rvalues))
             )
-        self._rvalues[slot] = x
+        self._rvalues[slot] = value
 
     def attr_del(self):
         self._rvalues[slot] = None

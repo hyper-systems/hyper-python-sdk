@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os, sys
+
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(PROJECT_ROOT)
 from hyper_systems.devices import Schema, Device
@@ -11,13 +12,10 @@ dev1 = Device.from_schema(schema, device_id="DE:AD:BE:EF:FF:00")
 
 # create device with invalid macaddr
 try:
-  dev2_invalid = Device.from_schema(schema, device_id="DE:AD:BE")
-  assert False
+    dev2_invalid = Device.from_schema(schema, device_id="DE:AD:BE")
+    assert False
 except ValueError as err:
-  assert (
-    err.args[0]
-    == "the vendor device id must a valid MAC address"
-  )
+    assert err.args[0] == "the vendor device id must a valid MAC address"
 
 # check printing
 assert str(dev1) == "'<Device12: DE:AD:BE:EF:FF:00>'"
@@ -132,13 +130,59 @@ assert dev1[5] == 1000
 
 # set value by slot out of bounds
 try:
-  dev1[999] = 42
-  assert False
+    dev1[999] = 42
+    assert False
 except TypeError as err:
-  assert (
-    err.args[0]
-    == "cannot set value: no read attribute for slot 999 found in device with schema 12"
-  )
+    assert (
+        err.args[0]
+        == "cannot set value: no read attribute for slot 999 found in device with schema 12"
+    )
 
 print(dev1)
 print(dev1.message)
+
+# device with keyed attributes
+SCHEMA_FILE = os.path.join(PROJECT_ROOT, "./tests/hyper_device_schema_91.json")
+
+schema = Schema.load(SCHEMA_FILE)
+dev_keyed = Device.from_schema(schema, device_id="ABC1234")
+
+print(dev_keyed.attributes)
+print(dev_keyed._rvalues)
+dev_keyed[0]["plastic"] = 1234
+print(dev_keyed[0])
+
+dev_keyed2 = Device.from_schema(schema, device_id="ABC4321")
+
+dev_keyed2.temperature_by_material_0["plastic"] = 4321
+print(dev_keyed2.temperature_by_material_0)
+
+dev_keyed3 = Device.from_schema(schema, device_id="ABC4321")
+try:
+    dev_keyed3.temperature_by_material_0 = 5
+    assert False
+except TypeError as err:
+    assert (
+        err.args[0]
+        == "value '5' for attribute 'temperature_by_material_0' has an invalid type: expected dict, got int"
+    )
+
+dev_keyed4 = Device.from_schema(schema, device_id="ABC4321")
+try:
+    dev_keyed4.temperature_by_material_0[42] = 10
+    assert False
+except TypeError as err:
+    assert (
+        err.args[0]
+        == "keyed attribute slot `0` (`temperature_by_material_0`) must be a dict[string, float]"
+    )
+
+dev_keyed5 = Device.from_schema(schema, device_id="ABC4321")
+try:
+    dev_keyed4[0][42] = 10
+    assert False
+except TypeError as err:
+    assert (
+        err.args[0]
+        == "keyed attribute slot `0` (`temperature_by_material_0`) must be a dict[string, float]"
+    )
