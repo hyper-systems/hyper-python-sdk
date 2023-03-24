@@ -238,152 +238,6 @@ def _atd_write_nullable(write_elt: Callable[[Any], Any]) \
 
 
 @dataclass
-class Macaddr:
-    """Original type: vendor_id_format = [ ... | Macaddr | ... ]"""
-
-    @property
-    def kind(self) -> str:
-        """Name of the class representing this variant."""
-        return 'Macaddr'
-
-    @staticmethod
-    def to_json() -> Any:
-        return 'Macaddr'
-
-    def to_json_string(self, **kw: Any) -> str:
-        return json.dumps(self.to_json(), **kw)
-
-
-@dataclass
-class Imei:
-    """Original type: vendor_id_format = [ ... | Imei | ... ]"""
-
-    @property
-    def kind(self) -> str:
-        """Name of the class representing this variant."""
-        return 'Imei'
-
-    @staticmethod
-    def to_json() -> Any:
-        return 'Imei'
-
-    def to_json_string(self, **kw: Any) -> str:
-        return json.dumps(self.to_json(), **kw)
-
-
-@dataclass
-class Decimal:
-    """Original type: vendor_id_format = [ ... | Decimal | ... ]"""
-
-    @property
-    def kind(self) -> str:
-        """Name of the class representing this variant."""
-        return 'Decimal'
-
-    @staticmethod
-    def to_json() -> Any:
-        return 'Decimal'
-
-    def to_json_string(self, **kw: Any) -> str:
-        return json.dumps(self.to_json(), **kw)
-
-
-@dataclass
-class Serial:
-    """Original type: vendor_id_format = [ ... | Serial | ... ]"""
-
-    @property
-    def kind(self) -> str:
-        """Name of the class representing this variant."""
-        return 'Serial'
-
-    @staticmethod
-    def to_json() -> Any:
-        return 'Serial'
-
-    def to_json_string(self, **kw: Any) -> str:
-        return json.dumps(self.to_json(), **kw)
-
-
-@dataclass
-class VendorIdFormat:
-    """Original type: vendor_id_format = [ ... ]"""
-
-    value: Union[Macaddr, Imei, Decimal, Serial]
-
-    @property
-    def kind(self) -> str:
-        """Name of the class representing this variant."""
-        return self.value.kind
-
-    @classmethod
-    def from_json(cls, x: Any) -> 'VendorIdFormat':
-        if isinstance(x, str):
-            if x == 'Macaddr':
-                return cls(Macaddr())
-            if x == 'Imei':
-                return cls(Imei())
-            if x == 'Decimal':
-                return cls(Decimal())
-            if x == 'Serial':
-                return cls(Serial())
-            _atd_bad_json('VendorIdFormat', x)
-        _atd_bad_json('VendorIdFormat', x)
-
-    def to_json(self) -> Any:
-        return self.value.to_json()
-
-    @classmethod
-    def from_json_string(cls, x: str) -> 'VendorIdFormat':
-        return cls.from_json(json.loads(x))
-
-    def to_json_string(self, **kw: Any) -> str:
-        return json.dumps(self.to_json(), **kw)
-
-
-@dataclass
-class Time:
-    """Original type: time"""
-
-    value: str
-
-    @classmethod
-    def from_json(cls, x: Any) -> 'Time':
-        return cls(_atd_read_string(x))
-
-    def to_json(self) -> Any:
-        return _atd_write_string(self.value)
-
-    @classmethod
-    def from_json_string(cls, x: str) -> 'Time':
-        return cls.from_json(json.loads(x))
-
-    def to_json_string(self, **kw: Any) -> str:
-        return json.dumps(self.to_json(), **kw)
-
-
-@dataclass
-class Json:
-    """Original type: json"""
-
-    value: Any
-
-    @classmethod
-    def from_json(cls, x: Any) -> 'Json':
-        return cls((lambda x: x)(x))
-
-    def to_json(self) -> Any:
-        return (lambda x: x)(self.value)
-
-    @classmethod
-    def from_json_string(cls, x: str) -> 'Json':
-        return cls.from_json(json.loads(x))
-
-    def to_json_string(self, **kw: Any) -> str:
-        return json.dumps(self.to_json(), **kw)
-
-
-@dataclass
 class Int8:
     """Original type: device_attribute_format = [ ... | Int8 | ... ]"""
 
@@ -571,24 +425,6 @@ class Bool:
 
 
 @dataclass
-class Data:
-    """Original type: device_attribute_format = [ ... | Data of ... | ... ]"""
-
-    value: int
-
-    @property
-    def kind(self) -> str:
-        """Name of the class representing this variant."""
-        return 'Data'
-
-    def to_json(self) -> Any:
-        return ['Data', _atd_write_int(self.value)]
-
-    def to_json_string(self, **kw: Any) -> str:
-        return json.dumps(self.to_json(), **kw)
-
-
-@dataclass
 class Enum:
     """Original type: device_attribute_format = [ ... | Enum of ... | ... ]"""
 
@@ -607,10 +443,46 @@ class Enum:
 
 
 @dataclass
+class Data:
+    """Original type: device_attribute_format = [ ... | Data of ... | ... ]"""
+
+    value: int
+
+    @property
+    def kind(self) -> str:
+        """Name of the class representing this variant."""
+        return 'Data'
+
+    def to_json(self) -> Any:
+        return ['Data', _atd_write_int(self.value)]
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
+class Keyed:
+    """Original type: device_attribute_format = [ ... | Keyed of ... | ... ]"""
+
+    value: DeviceAttributeFormat
+
+    @property
+    def kind(self) -> str:
+        """Name of the class representing this variant."""
+        return 'Keyed'
+
+    def to_json(self) -> Any:
+        return ['Keyed', (lambda x: x.to_json())(self.value)]
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
 class DeviceAttributeFormat:
     """Original type: device_attribute_format = [ ... ]"""
 
-    value: Union[Int8, Int16, Int32, Int64, Uint8, Uint16, Uint32, Uint64, Float32, Float64, Bool, Data, Enum]
+    value: Union[Int8, Int16, Int32, Int64, Uint8, Uint16, Uint32, Uint64, Float32, Float64, Bool, Enum, Data, Keyed]
 
     @property
     def kind(self) -> str:
@@ -645,10 +517,12 @@ class DeviceAttributeFormat:
             _atd_bad_json('DeviceAttributeFormat', x)
         if isinstance(x, List) and len(x) == 2:
             cons = x[0]
-            if cons == 'Data':
-                return cls(Data(_atd_read_int(x[1])))
             if cons == 'Enum':
                 return cls(Enum(_atd_read_assoc_object_into_dict(_atd_read_string)(x[1])))
+            if cons == 'Data':
+                return cls(Data(_atd_read_int(x[1])))
+            if cons == 'Keyed':
+                return cls(Keyed(DeviceAttributeFormat.from_json(x[1])))
             _atd_bad_json('DeviceAttributeFormat', x)
         _atd_bad_json('DeviceAttributeFormat', x)
 
@@ -657,6 +531,152 @@ class DeviceAttributeFormat:
 
     @classmethod
     def from_json_string(cls, x: str) -> 'DeviceAttributeFormat':
+        return cls.from_json(json.loads(x))
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
+class Macaddr:
+    """Original type: vendor_id_format = [ ... | Macaddr | ... ]"""
+
+    @property
+    def kind(self) -> str:
+        """Name of the class representing this variant."""
+        return 'Macaddr'
+
+    @staticmethod
+    def to_json() -> Any:
+        return 'Macaddr'
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
+class Imei:
+    """Original type: vendor_id_format = [ ... | Imei | ... ]"""
+
+    @property
+    def kind(self) -> str:
+        """Name of the class representing this variant."""
+        return 'Imei'
+
+    @staticmethod
+    def to_json() -> Any:
+        return 'Imei'
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
+class Decimal:
+    """Original type: vendor_id_format = [ ... | Decimal | ... ]"""
+
+    @property
+    def kind(self) -> str:
+        """Name of the class representing this variant."""
+        return 'Decimal'
+
+    @staticmethod
+    def to_json() -> Any:
+        return 'Decimal'
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
+class Serial:
+    """Original type: vendor_id_format = [ ... | Serial | ... ]"""
+
+    @property
+    def kind(self) -> str:
+        """Name of the class representing this variant."""
+        return 'Serial'
+
+    @staticmethod
+    def to_json() -> Any:
+        return 'Serial'
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
+class VendorIdFormat:
+    """Original type: vendor_id_format = [ ... ]"""
+
+    value: Union[Macaddr, Imei, Decimal, Serial]
+
+    @property
+    def kind(self) -> str:
+        """Name of the class representing this variant."""
+        return self.value.kind
+
+    @classmethod
+    def from_json(cls, x: Any) -> 'VendorIdFormat':
+        if isinstance(x, str):
+            if x == 'Macaddr':
+                return cls(Macaddr())
+            if x == 'Imei':
+                return cls(Imei())
+            if x == 'Decimal':
+                return cls(Decimal())
+            if x == 'Serial':
+                return cls(Serial())
+            _atd_bad_json('VendorIdFormat', x)
+        _atd_bad_json('VendorIdFormat', x)
+
+    def to_json(self) -> Any:
+        return self.value.to_json()
+
+    @classmethod
+    def from_json_string(cls, x: str) -> 'VendorIdFormat':
+        return cls.from_json(json.loads(x))
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
+class Time:
+    """Original type: time"""
+
+    value: str
+
+    @classmethod
+    def from_json(cls, x: Any) -> 'Time':
+        return cls(_atd_read_string(x))
+
+    def to_json(self) -> Any:
+        return _atd_write_string(self.value)
+
+    @classmethod
+    def from_json_string(cls, x: str) -> 'Time':
+        return cls.from_json(json.loads(x))
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
+@dataclass
+class Json:
+    """Original type: json"""
+
+    value: Any
+
+    @classmethod
+    def from_json(cls, x: Any) -> 'Json':
+        return cls((lambda x: x)(x))
+
+    def to_json(self) -> Any:
+        return (lambda x: x)(self.value)
+
+    @classmethod
+    def from_json_string(cls, x: str) -> 'Json':
         return cls.from_json(json.loads(x))
 
     def to_json_string(self, **kw: Any) -> str:
