@@ -21,7 +21,7 @@ pip install -U hyper-systems
 Add to `requirements.txt` for pip:
 
 ```shell
-echo "hyper-systems==1.3.0" >> requirements.txt
+echo "hyper-systems==1.4.0" >> requirements.txt
 ```
 
 Consider using [venv](https://docs.python.org/3/tutorial/venv.html), if you want to have an isolated environment for your project with pip.
@@ -29,7 +29,7 @@ Consider using [venv](https://docs.python.org/3/tutorial/venv.html), if you want
 Alternatively, install with poetry:
 
 ```shell
-poetry add "hyper-systems==1.3.0"
+poetry add "hyper-systems==1.4.0"
 ```
 
 ### Installing the latest development version of the package globally
@@ -41,7 +41,6 @@ $ pip install -U git+https://github.com/hyper-systems/hyper-python-sdk.git@maste
 ## Using this repo for development
 
 This repo uses [poetry](https://python-poetry.org/) (please check the [docs](https://python-poetry.org/docs/)) for development and building. It is currentlu set up to create a `.venv` directory in the root of this project on install.
-
 
 Installing the environment:
 
